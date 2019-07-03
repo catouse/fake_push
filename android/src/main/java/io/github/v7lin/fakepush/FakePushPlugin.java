@@ -154,10 +154,10 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
 
         try {
             ApplicationInfo appInfo = registrar.context().getPackageManager().getApplicationInfo(registrar.context().getPackageName(), PackageManager.GET_META_DATA);
-            XGPushConfig.enableOtherPush(registrar.context(), true);
-            XGPushConfig.setHuaweiDebug(enableDebug);
-            XGPushConfig.setMiPushAppId(registrar.context(), appInfo.metaData.getString(XinGeConstants.META_KEY_XIAOMI_APPID));
-            XGPushConfig.setMiPushAppKey(registrar.context(), appInfo.metaData.getString(XinGeConstants.META_KEY_XIAOMI_APPKEY));
+            XGPushConfig.enableOtherPush(registrar.context(), false);
+            // XGPushConfig.setHuaweiDebug(enableDebug);
+            // XGPushConfig.setMiPushAppId(registrar.context(), appInfo.metaData.getString(XinGeConstants.META_KEY_XIAOMI_APPID));
+            // XGPushConfig.setMiPushAppKey(registrar.context(), appInfo.metaData.getString(XinGeConstants.META_KEY_XIAOMI_APPKEY));
         } catch (PackageManager.NameNotFoundException ignore) {
         }
 
@@ -207,7 +207,7 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
 
     private void setAccessId(MethodCall call, final Result result) {
         String accessId = call.argument(ARGUMENT_KEY_ACCESSID);
-        result.success(XGPushConfig.setAccessId(registrar.context(), accessId));
+        result.success(XGPushConfig.setAccessId(registrar.context(), Long.parseLong(accessId, 10)));
     }
 
     private void setAccessKey(MethodCall call, final Result result) {
