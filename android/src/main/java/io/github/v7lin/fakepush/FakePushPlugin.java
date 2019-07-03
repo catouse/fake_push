@@ -56,8 +56,8 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
     private static final String METHOD_BINDTAGS = "bindTags";
     private static final String METHOD_UNBINDTAGS = "unbindTags";
 
-    private static final String METHOD_SETACCESSID = 'setAccessId';
-    private static final String METHOD_SETACCESSKEY = 'setAccessKey';
+    private static final String METHOD_SETACCESSID = "setAccessId";
+    private static final String METHOD_SETACCESSKEY = "setAccessKey";
 
     private static final String METHOD_ONRECEIVEDEVICETOKEN = "onReceiveDeviceToken";
     private static final String METHOD_ONRECEIVEMESSAGE = "onReceiveMessage";
@@ -68,8 +68,8 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
     private static final String ARGUMENT_KEY_ENABLEDEBUG = "enableDebug";
     private static final String ARGUMENT_KEY_ACCOUNT = "account";
     private static final String ARGUMENT_KEY_TAGS = "tags";
-    private static final String ARGUMENT_KEY_ACCESSID = 'accessId';
-    private static final String ARGUMENT_KEY_ACCESSKEY = 'accessKey';
+    private static final String ARGUMENT_KEY_ACCESSID = "accessId";
+    private static final String ARGUMENT_KEY_ACCESSKEY = "accessKey";
 
     public static final String ARGUMENT_KEY_RESULT_TITLE = "title";
     public static final String ARGUMENT_KEY_RESULT_CONTENT = "content";
