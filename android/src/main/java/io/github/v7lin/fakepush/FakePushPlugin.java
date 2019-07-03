@@ -207,12 +207,14 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
 
     private void setAccessId(MethodCall call, final Result result) {
         String accessId = call.argument(ARGUMENT_KEY_ACCESSID);
-        result.success(XGPushConfig.setAccessId(registrar.context(), Long.parseLong(accessId, 10)));
+        XGPushConfig.setAccessId(registrar.context(), Long.parseLong(accessId, 10));
+        result.success(null);
     }
 
     private void setAccessKey(MethodCall call, final Result result) {
         String accessKey = call.argument(ARGUMENT_KEY_ACCESSKEY);
-        result.success(XGPushConfig.setAccessKey(registrar.context(), accessKey));
+        XGPushConfig.setAccessKey(registrar.context(), accessKey);
+        result.success(null);
     }
 
     private void bindAccount(MethodCall call, final Result result) {
