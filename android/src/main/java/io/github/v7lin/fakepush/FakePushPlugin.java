@@ -56,6 +56,9 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
     private static final String METHOD_BINDTAGS = "bindTags";
     private static final String METHOD_UNBINDTAGS = "unbindTags";
 
+    private static final String METHOD_SETACCESSID = 'setAccessId';
+    private static final String METHOD_SETACCESSKEY = 'setAccessKey';
+
     private static final String METHOD_ONRECEIVEDEVICETOKEN = "onReceiveDeviceToken";
     private static final String METHOD_ONRECEIVEMESSAGE = "onReceiveMessage";
     private static final String METHOD_ONRECEIVENOTIFICATION = "onReceiveNotification";
@@ -65,6 +68,8 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
     private static final String ARGUMENT_KEY_ENABLEDEBUG = "enableDebug";
     private static final String ARGUMENT_KEY_ACCOUNT = "account";
     private static final String ARGUMENT_KEY_TAGS = "tags";
+    private static final String ARGUMENT_KEY_ACCESSID = 'accessId';
+    private static final String ARGUMENT_KEY_ACCESSKEY = 'accessKey';
 
     public static final String ARGUMENT_KEY_RESULT_TITLE = "title";
     public static final String ARGUMENT_KEY_RESULT_CONTENT = "content";
@@ -114,6 +119,10 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
             bindTags(call, result);
         } else if (METHOD_UNBINDTAGS.equals(call.method)) {
             unbindTags(call, result);
+        } else if (METHOD_SETACCESSID.equals(call.method)) {
+            setAccessId(call, result);
+        } else if (METHOD_SETACCESSKEY.equals(call.method)) {
+            setAccessKey(call, result);
         } else {
             result.notImplemented();
         }
@@ -194,6 +203,16 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
         });
 
         result.success(null);
+    }
+
+    private void setAccessId(MethodCall call, final Result result) {
+        String accessId = call.argument(ARGUMENT_KEY_ACCESSID);
+        result.success(XGPushConfig.setAccessId(registrar.context(), accessId));
+    }
+
+    private void setAccessKey(MethodCall call, final Result result) {
+        String accessKey = call.argument(ARGUMENT_KEY_ACCESSKEY);
+        result.success(XGPushConfig.setAccessKey(registrar.context(), accessKey));
     }
 
     private void bindAccount(MethodCall call, final Result result) {

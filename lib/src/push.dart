@@ -17,6 +17,9 @@ class Push {
   static const String _METHOD_BINDTAGS = 'bindTags';
   static const String _METHOD_UNBINDTAGS = 'unbindTags';
 
+  static const String _METHOD_SETACCESSID = 'setAccessId';
+  static const String _METHOD_SETACCESSKEY = 'setAccessKey';
+
   static const String _METHOD_ONRECEIVEDEVICETOKEN = 'onReceiveDeviceToken';
   static const String _METHOD_ONRECEIVEMESSAGE = 'onReceiveMessage';
   static const String _METHOD_ONRECEIVENOTIFICATION = 'onReceiveNotification';
@@ -26,6 +29,8 @@ class Push {
   static const String _ARGUMENT_KEY_ENABLEDEBUG = 'enableDebug';
   static const String _ARGUMENT_KEY_ACCOUNT = 'account';
   static const String _ARGUMENT_KEY_TAGS = 'tags';
+  static const String _ARGUMENT_KEY_ACCESSID = 'accessId';
+  static const String _ARGUMENT_KEY_ACCESSKEY = 'accessKey';
 
   final MethodChannel _channel =
       const MethodChannel('v7lin.github.io/fake_push');
@@ -126,6 +131,32 @@ class Push {
   /// 获取 DeviceToken
   Future<String> getDeviceToken() {
     return _channel.invokeMethod(_METHOD_GETDEVICETOKEN);
+  }
+
+  // 设置AccessID
+  Future<void> setAccessId({
+    @required String accessId,
+  }) {
+    assert(accessId != null && accessId.isNotEmpty);
+    return _channel.invokeMethod(
+      _METHOD_SETACCESSID,
+      <String, dynamic>{
+        _ARGUMENT_KEY_ACCESSID: accessId,
+      },
+    );
+  }
+
+  // 设置AccessKey
+  Future<void> setAccessKey({
+    @required String accessKey,
+  }) {
+    assert(accessKey != null && accessKey.isNotEmpty);
+    return _channel.invokeMethod(
+      _METHOD_SETACCESSKEY,
+      <String, dynamic>{
+        _ARGUMENT_KEY_ACCESSKEY: accessKey,
+      },
+    );
   }
 
   /// 绑定帐号
