@@ -193,16 +193,15 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
         XGPushManager.unregisterPush(registrar.context(), new XGIOperateCallback() {
             @Override
             public void onSuccess(Object data, int flag) {
-
+                result.success(true);
             }
 
             @Override
             public void onFail(Object data, int errCode, String msg) {
-
+                result.success(false);
             }
         });
 
-        result.success(null);
     }
 
     private void setAccessId(MethodCall call, final Result result) {
