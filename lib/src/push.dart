@@ -87,13 +87,19 @@ class Push {
   }
 
   /// 开始推送
-  Future<void> startWork({
+  Future<String> startWork({
     bool enableDebug = false,
+    String account,
+    String accessId,
+    String accessKey,
   }) {
-    return _channel.invokeMethod(
+    return _channel.invokeMethod<String>(
       _METHOD_STARTWORK,
       <String, dynamic>{
         _ARGUMENT_KEY_ENABLEDEBUG: enableDebug,
+        _ARGUMENT_KEY_ACCOUNT: account,
+        _ARGUMENT_KEY_ACCESSID: accessId,
+        _ARGUMENT_KEY_ACCESSKEY: accessKey,
       },
     );
   }
@@ -130,7 +136,7 @@ class Push {
 
   /// 获取 DeviceToken
   Future<String> getDeviceToken() {
-    return _channel.invokeMethod(_METHOD_GETDEVICETOKEN);
+    return _channel.invokeMethod<String>(_METHOD_GETDEVICETOKEN);
   }
 
   // 设置AccessID

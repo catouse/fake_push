@@ -26,7 +26,6 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.view.FlutterNativeView;
 import io.github.v7lin.fakepush.util.NotificationManagerCompat;
-import io.github.v7lin.fakepush.xinge.XinGeConstants;
 import io.github.v7lin.fakepush.xinge.XinGeMSGClickActivity;
 
 /**
@@ -150,18 +149,17 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
 
     private void startWork(MethodCall call, final Result result) {
         boolean enableDebug = call.argument(ARGUMENT_KEY_ENABLEDEBUG);
-        XGPushConfig.enableDebug(registrar.context(), enableDebug);
+        String account = call.argument(ARGUMENT_KEY_ACCOUNT);
+        String accessId = call.argument(ARGUMENT_KEY_ACCESSID);
+        String accessKey = call.argument(ARGUMENT_KEY_ACCESSKEY);
 
-        try {
-            ApplicationInfo appInfo = registrar.context().getPackageManager().getApplicationInfo(registrar.context().getPackageName(), PackageManager.GET_META_DATA);
-            XGPushConfig.enableOtherPush(registrar.context(), false);
-            // XGPushConfig.setHuaweiDebug(enableDebug);
-            // XGPushConfig.setMiPushAppId(registrar.context(), appInfo.metaData.getString(XinGeConstants.META_KEY_XIAOMI_APPID));
-            // XGPushConfig.setMiPushAppKey(registrar.context(), appInfo.metaData.getString(XinGeConstants.META_KEY_XIAOMI_APPKEY));
-        } catch (PackageManager.NameNotFoundException ignore) {
+        XGPushConfig.enableDebug(registrar.context(), enableDebug);
+        if (accessId != null && !accessId.isEmpty()) {
+            XGPushConfig.setAccessId(registrar.context(), Long.parseLong(accessId, 10));
+            XGPushConfig.setAccessKey(registrar.context(), accessKey);
         }
 
-        XGPushManager.registerPush(registrar.context(), new XGIOperateCallback() {
+        XGIOperateCallback callback = new XGIOperateCallback() {
             @Override
             public void onSuccess(Object data, int flag) {
                 //token在设备卸载重装的时候有可能会变
@@ -174,31 +172,37 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
                         }
                     });
                 }
+                result.success(data);
             }
 
             @Override
             public void onFail(Object data, int errCode, String msg) {
                 Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+                result.error(errCode + '', msg, data);
             }
-        });
+        };
+
+        if (account != null && !account.isEmpty()) {
+            XGPushManager.registerPush(registrar.context(), account, callback);
+        } else {
+            XGPushManager.registerPush(registrar.context(), callback);
+        }
 
         if (registrar.activity() != null) {
             handleNotificationClickedFromIntent(METHOD_ONLAUNCHNOTIFICATION, registrar.activity().getIntent());
         }
-
-        result.success(null);
     }
 
     private void stopWork(MethodCall call, final Result result) {
         XGPushManager.unregisterPush(registrar.context(), new XGIOperateCallback() {
             @Override
             public void onSuccess(Object data, int flag) {
-                result.success(true);
+                result.success(null);
             }
 
             @Override
             public void onFail(Object data, int errCode, String msg) {
-                result.success(false);
+                result.error(errCode + '', msg, data);
             }
         });
 
@@ -221,16 +225,14 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
         XGPushManager.bindAccount(registrar.context(), account, new XGIOperateCallback() {
             @Override
             public void onSuccess(Object data, int flag) {
-
+                result.success(null);
             }
 
             @Override
             public void onFail(Object data, int errCode, String msg) {
-
+                result.error(errCode + '', msg, data);
             }
         });
-
-        result.success(null);
     }
 
     private void unbindAccount(MethodCall call, final Result result) {
@@ -238,29 +240,25 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
         XGPushManager.delAccount(registrar.context(), account, new XGIOperateCallback() {
             @Override
             public void onSuccess(Object data, int flag) {
-
+                result.success(null);
             }
 
             @Override
             public void onFail(Object data, int errCode, String msg) {
-
+                result.error(errCode + '', msg, data);
             }
         });
-
-        result.success(null);
     }
 
     private void bindTags(MethodCall call, final Result result) {
         List<String> tags = call.argument(ARGUMENT_KEY_TAGS);
         XGPushManager.setTags(registrar.context(), "bindTags:" + tags.hashCode(), new HashSet<>(tags));
-
         result.success(null);
     }
 
     private void unbindTags(MethodCall call, final Result result) {
         List<String> tags = call.argument(ARGUMENT_KEY_TAGS);
         XGPushManager.deleteTags(registrar.context(), "unbindTags:" + tags.hashCode(), new HashSet<>(tags));
-
         result.success(null);
     }
 
