@@ -178,7 +178,7 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
             @Override
             public void onFail(Object data, int errCode, String msg) {
                 Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-                result.error(errCode + '', msg, data);
+                result.error(errCode.toString(), msg, data);
             }
         };
 
@@ -202,7 +202,7 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
 
             @Override
             public void onFail(Object data, int errCode, String msg) {
-                result.error(errCode + '', msg, data);
+                result.error(errCode.toString(), msg, data);
             }
         });
 
@@ -230,7 +230,7 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
 
             @Override
             public void onFail(Object data, int errCode, String msg) {
-                result.error(errCode + '', msg, data);
+                result.error(errCode.toString(), msg, data);
             }
         });
     }
@@ -245,7 +245,7 @@ public class FakePushPlugin implements MethodCallHandler, PluginRegistry.NewInte
 
             @Override
             public void onFail(Object data, int errCode, String msg) {
-                result.error(errCode + '', msg, data);
+                result.error(errCode.toString(), msg, data);
             }
         });
     }
